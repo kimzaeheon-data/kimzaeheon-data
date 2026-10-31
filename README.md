@@ -44,11 +44,11 @@ flowchart TD
 
 *저장소에 공개된 흐름을 요약했습니다. Naive 경로는 검색 후 재검색 루프 없이 답변을 생성합니다.*
 
-**담당 기여** · Retrieval Engineer
+**담당 기여** · 임베딩·FAISS 구축, 검색 개선 및 평가
 
-- 임베딩 생성과 FAISS 인덱스 구축, 검색 기법 고도화
-- 질문 재작성과 기관명 메타데이터 필터링을 통한 검색 개선
-- Reranking·Multi-query 실험을 비교하고 최종 검색 구성을 선택
+- BGE-M3 임베딩과 FAISS 기반 문서 검색 구축
+- 질문 재작성과 기관·예산·날짜 조건을 검색 과정에 적용
+- 평가 질문 50건에서 Hit Rate@5 0.600 → 0.940, Context Precision 0.432 → 0.848로 개선
 
 **검증 결과** · RFP 100건, 14,606개 청크. 저장소 보고 기준 검색 Hit Rate@5 **0.940**, Context Precision **0.848**. 생성 Faithfulness **0.905**는 별도 생성 평가 결과(골든 63건 중 비거부 50건)입니다.
 
@@ -75,12 +75,11 @@ flowchart TD
 
 ![알약 객체 탐지 및 약품 정보 조회 파이프라인](https://raw.githubusercontent.com/jaeheonki/medicine-object-detection-project/main/docs/images/pipeline_diagram.png)
 
-**담당 기여** · PM · 모델 비교 및 데이터 처리 · 약품 API 연동
+**담당 기여** · YOLO26n 모델학습·최적화, DETR 실험 및 오분류 분석
 
-- RetinaNet 탐지 헤드를 클래스 수에 맞게 교체하고 비교 실험
-- YOLO11s·11m 비교·튜닝과 최종 모델 선택에 참여
-- 데이터 통합 과정의 JSON 덮어쓰기 문제를 하위 폴더 구조 보존으로 해결
-- 식약처 제품허가정보 API를 우선 조회하고 e약은요 API로 정보 보완
+- YOLO26n의 해상도·데이터 증강·Epoch·학습률·Optimizer를 조정하며 7차례 튜닝 실험 수행
+- DETR 실험 및 오분류 사례 분석
+- SGD와 초기 학습률 0.005를 적용해 담당 모델의 mAP@0.5 0.7118 → 0.9161로 개선
 
 **검증 결과** · 프로젝트 내부 검증 mAP@0.5 **0.9914**, F1 **0.9948**. 데이터 확장 전후 평가 클래스가 달라 동일 조건의 튜닝 개선치로 해석하지 않습니다.
 
@@ -134,11 +133,11 @@ flowchart TD
 
 *저장소의 서비스 흐름 중 광고 이미지 생성 경로를 요약했습니다.*
 
-**담당 기여** · 추론 파이프라인 및 서빙 · 인프라
+**담당 기여** · 모델 서빙 및 GPU 인프라
 
-- ControlNet/IP-Adapter 추론 파이프라인 구성 및 추론 최적화
-- GCP GPU VM·CUDA 환경 구축과 배포 담당
-- GPU 모델 서버와 서비스 연동을 위한 서빙 환경 구성
+- FastAPI 기반 추론 API와 Docker·GCP L4 GPU 서빙 환경 구축
+- 전처리 캐싱 적용 및 생성 방식·Step·해상도별 추론 성능과 GPU 메모리 최적화 기법 비교
+- 고품질 생성 방식에서 빠른 합성 방식으로 변경해 추론 시간 P50 17.47초 → 1.72초로 단축
 
 `SDXL` `LoRA` `ControlNet` `IP-Adapter` `FastAPI` `Docker` `GCP` `CUDA`
 
