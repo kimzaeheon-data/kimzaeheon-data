@@ -4,7 +4,7 @@
 
 ### 실험과 검증을 통해 AI 모델을 개선하고 서비스로 연결하는 AI 엔지니어
 
-RAG · Computer Vision · Generative AI
+검색 품질 개선 · 모델 비교·평가 · 추론 파이프라인 및 서빙
 
 </div>
 
