@@ -75,7 +75,7 @@ flowchart TD
 
 ![알약 객체 탐지 및 약품 정보 조회 파이프라인](https://raw.githubusercontent.com/jaeheonki/medicine-object-detection-project/main/docs/images/pipeline_diagram.png)
 
-**담당 기여** · YOLO26n 모델학습·최적화, DETR 실험 및 오분류 분석
+**담당 기여** · YOLO26n 모델 학습·최적화, DETR 실험 및 오분류 분석
 
 - YOLO26n의 해상도·데이터 증강·Epoch·학습률·Optimizer를 조정하며 7차례 튜닝 실험 수행
 - DETR 실험 및 오분류 사례 분석
