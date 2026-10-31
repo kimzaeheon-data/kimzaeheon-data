@@ -2,7 +2,7 @@
 
 # Kim Jaeheon · AI Engineer
 
-### 문서 검색부터 객체 탐지, 이미지 생성까지 — AI 모델을 사용자가 만나는 서비스로 연결합니다.
+### 실험과 검증을 통해 AI 모델을 개선하고 서비스로 연결하는 AI 엔지니어
 
 RAG · Computer Vision · Generative AI
 
