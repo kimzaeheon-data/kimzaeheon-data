@@ -156,4 +156,5 @@ flowchart TD
 | 서빙 · 인프라 | FastAPI, Docker, GCP, CUDA |
 | 도구 | OpenAI API, Hugging Face |
 | 협업| Git, GitHub |
+
 RFPilot·이게머약 화면과 팀 성과는 연결된 원본 저장소를 출처로 사용했습니다. Ad Creative Studio 화면은 직접 제공한 서비스 캡처입니다. 개인 담당 범위는 각 프로젝트의 기여 항목에 구분했습니다.
