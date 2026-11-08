@@ -10,55 +10,28 @@
 
 ## Projects
 
-### 01. RFP 문서 요약 & 질문/답변 챗봇 · RFPilot
+### RFPilot · 공공조달 RFP 챗봇 개인 고도화
 
-공공입찰 RFP 문서에서 필요한 정보를 검색하고, 근거 기반 답변과 의무사항 체크리스트를 제공하는 팀 프로젝트입니다.
+공공조달 제안요청서(RFP)에서 근거 문서를 찾아 답변하고 의무사항 체크리스트를 만드는 챗봇입니다. 팀 프로젝트에서 BGE-M3 임베딩과 FAISS 검색을 구축하고 검색 품질을 평가했습니다. 프로젝트를 마친 뒤 검색 평가 코드와 실제 챗봇의 요청 경로를 비교해 두 가지 문제를 찾아 개인 저장소에서 개선했습니다.
 
 **UI 화면**
 
-![근거 문서와 추천 질문을 함께 제공하는 질의응답 화면](https://raw.githubusercontent.com/Codeit-Part3-5Team/codeit-part3-5team-project/main/reports/agentic-chatbot1.png)
+![예산 5억 원 이상인 예시 사업 7건을 예산 내림차순으로 보여 주는 전수 조회 화면](https://raw.githubusercontent.com/kimzaeheon-data/rfp-rag-e2e/609d2edf6c9a15aa05ca857dde9db6fd10e92780/reports/exhaustive-lookup-demo.png)
 
-<details>
-<summary>의무사항 체크리스트 화면 보기</summary>
+*가상 사업 10건을 사용한 데모입니다. 조건을 충족한 7건과 예산을 확인할 수 없는 1건을 구분해 표시합니다.*
 
-![신뢰 배지와 인용 하이라이트를 제공하는 체크리스트 화면](https://raw.githubusercontent.com/Codeit-Part3-5Team/codeit-part3-5team-project/main/reports/agentic-chatbot2.png)
+**개인 고도화 및 검증**
 
-</details>
-
-**파이프라인**
-
-```mermaid
-flowchart TD
-    Q[사용자 질문] --> A[질문 분석 · 재작성]
-    A --> R{의도 라우팅}
-    R --> S[FAISS + BGE-M3 검색]
-    S --> G{검색 결과 평가 · Agentic 경로}
-    G -->|부족| RE[조건 조정 · 재검색]
-    RE --> S
-    G -->|충분| GEN[근거 기반 답변 생성]
-    R --> C[문서 선택 · 의무항목 추출]
-    C --> GEN
-    GEN --> CHECK[근거 검증 · 거부 판정]
-    CHECK --> OUT[답변 · 준수 체크리스트]
-```
-
-*저장소에 공개된 흐름을 요약했습니다. Naive 경로는 검색 후 재검색 루프 없이 답변을 생성합니다.*
-
-**담당 기여** · 임베딩·FAISS 구축, 검색 개선 및 평가
-
-- BGE-M3 임베딩과 FAISS 기반 문서 검색 구축
-- 질문 재작성과 기관·예산·날짜 조건을 검색 과정에 적용
-- 평가 질문 50건에서 Hit Rate@5 0.600 → 0.940, Context Precision 0.432 → 0.848로 개선
-
-**검증 결과** · RFP 100건, 14,606개 청크. 저장소 보고 기준 검색 Hit Rate@5 **0.940**, Context Precision **0.848**. 생성 Faithfulness **0.905**는 별도 생성 평가 결과(골든 63건 중 비거부 50건)입니다.
+- **챗봇의 답변용 검색에 메타데이터 필터 적용**. 검색 평가에서 사용하던 기관·예산·날짜 필터가 챗봇의 최초 검색에 빠져 있었습니다. 최초 검색에 필터를 연결하고 재검색에서도 질문에 명시된 조건을 유지했습니다. 사업 메타데이터 요약 100건과 평가 질문 6개로 비교한 결과, 정답 문서가 검색 1위에 나온 질문은 **3/6 → 6/6**, 평균 정답 문서 재현율(Recall@5)은 **50.0% → 87.1%**였습니다. 평균 응답 시간은 **7.90초 → 10.44초**였습니다.
+- **목록·건수 질문에 사업 단위 전수 조회 추가**. 유사도 검색 상위 5개로 답변을 만들면 조건을 만족하는 사업도 누락될 수 있었습니다. 전체 인덱스의 청크를 `doc_id`로 묶어 사업별로 조건을 확인하고, 일치하는 사업의 목록이나 건수를 반환하도록 분리했습니다. 실제 사업 메타데이터 요약 100건을 대상으로 `/chat`에서 조건 추출 결과를 고정해 검증한 결과, 예산 5억 원 이상인 **정답 사업 22건을 모두 반환**했고 예산 미확인 7건을 별도로 안내했습니다.
 
 `Python` `BGE-M3` `FAISS` `LangGraph` `FastAPI` `React`
 
-[프로젝트 저장소 및 평가 상세](https://github.com/Codeit-Part3-5Team/codeit-part3-5team-project)
+[개인 고도화 저장소 및 실험 상세](https://github.com/kimzaeheon-data/rfp-rag-e2e) · [원본 팀 프로젝트](https://github.com/Codeit-Part3-5Team/codeit-part3-5team-project)
 
 ---
 
-### 02. 이게머약 · 알약 객체 탐지
+### 이게머약 · 알약 객체 탐지
 
 스마트폰으로 촬영한 이미지에서 알약을 탐지하고, 식약처 API로 효능·복용법·주의사항을 조회하는 팀 프로젝트입니다.
 
@@ -91,7 +64,7 @@ flowchart TD
 
 ---
 
-### 03. Ad Creative Studio
+### Ad Creative Studio
 
 소형가전 제품 사진을 입력받아 제품을 보존하면서 브랜드 톤·판매 시간대에 맞춘 광고 이미지와 문구를 생성하는 팀 프로젝트입니다.
 
@@ -158,4 +131,4 @@ flowchart TD
 | 도구 | OpenAI API, Hugging Face |
 | 협업| Git, GitHub |
 
-RFPilot·이게머약 화면과 팀 성과는 연결된 원본 저장소를 출처로 사용했습니다. Ad Creative Studio 화면은 직접 제공한 서비스 캡처입니다. 개인 담당 범위는 각 프로젝트의 기여 항목에 구분했습니다.
+RFPilot 화면은 개인 고도화 저장소의 데모이며, 이게머약 화면과 팀 성과의 출처는 원본 팀 저장소입니다. Ad Creative Studio 화면은 서비스 캡처입니다.
